@@ -21,4 +21,8 @@ public class PassengerService {
     public List<Passenger> getPassengers(){
         return passengerRepository.findAll();
     }
+
+    public Passenger getPassengerById(Long id){
+        return passengerRepository.findById(id).get();
+    }
 }
