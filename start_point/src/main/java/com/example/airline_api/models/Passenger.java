@@ -59,4 +59,7 @@ public class Passenger {
     public void setFlights(List<Flight> flights) {
         this.flights = flights;
     }
+
+
+
 }
