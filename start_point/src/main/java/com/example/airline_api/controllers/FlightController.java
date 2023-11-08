@@ -20,14 +20,23 @@ public class FlightController {
 
     // Display all available flights
     @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights(){
+    public ResponseEntity<List<Flight>> getAllFlightsAndFilters(
+            @RequestParam(required = false, name = "destination") String destination
+    ){
+//        Filter flights by destination
+        if(destination != null){
+            return new ResponseEntity<>(
+                    flightService.filterFlightsByDestination(destination),
+                    HttpStatus.OK);
+        }
+//        Get all flights
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
     }
 
     // Display a specific flight
     @GetMapping(value = "/{id}")
     public ResponseEntity<Flight> getFlight(@PathVariable Long id){
-        Flight flight = flightService.getFlightById(id);
+        Flight flight = flightService.getFlightById(id).get();
         return new ResponseEntity<>(flight, HttpStatus.OK);
     }
 
@@ -42,8 +51,9 @@ public class FlightController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Flight> addPassengerToFlight(@RequestBody FlightDTO flightDTO,
                                                        @PathVariable Long id){
-        Flight updateFlight = flightService.updateFlight(flightDTO, id);
-        return new ResponseEntity<>(updateFlight, HttpStatus.OK);
+
+        Flight bookPassengerToFlight = flightService.bookPassenger(flightDTO, id);
+        return new ResponseEntity<>(bookPassengerToFlight, HttpStatus.OK);
     }
 
     // Cancel flight

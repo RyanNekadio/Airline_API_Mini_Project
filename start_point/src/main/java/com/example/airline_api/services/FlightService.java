@@ -20,7 +20,6 @@ public class FlightService {
 
     @Autowired
     PassengerService passengerService;
-
     public Flight addFlightDetails(FlightDTO flightDTO){
         Flight flight = new Flight(
                 flightDTO.getDestination(),
@@ -29,7 +28,7 @@ public class FlightService {
                 flightDTO.getDepartureTime()
         );
         for (Long passengerid : flightDTO.getPassengerIds()){
-            Passenger passenger = passengerService.getPassengerById(passengerid);
+            Passenger passenger = passengerService.getPassengerById(passengerid).get();
             flight.addPassenger(passenger);
         }
         flightRepository.save(flight);
@@ -39,12 +38,12 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
-    public Flight getFlightById(Long id){
-        return flightRepository.findById(id).get();
+    public Optional<Flight> getFlightById(Long id){
+        return flightRepository.findById(id);
     }
 
     @Transactional
-    public Flight updateFlight(FlightDTO flightDTO, Long id){
+    public Flight bookPassenger(FlightDTO flightDTO, Long id){
 
         Flight flightToUpdate = flightRepository.findById(id).get();
 
@@ -55,7 +54,7 @@ public class FlightService {
         flightToUpdate.setPassengers(new ArrayList<>());
 
         for(Long passengersIds : flightDTO.getPassengerIds()){
-            Passenger passenger = passengerService.getPassengerById(passengersIds);
+            Passenger passenger = passengerService.getPassengerById(passengersIds).get();
             flightToUpdate.addPassenger(passenger);
         }
 
@@ -67,6 +66,7 @@ public class FlightService {
         flightRepository.deleteById(id);
     }
 
-
-
+    public List<Flight> filterFlightsByDestination(String destination){
+        return flightRepository.findAllFlightsByDestination(destination);
+    }
 }

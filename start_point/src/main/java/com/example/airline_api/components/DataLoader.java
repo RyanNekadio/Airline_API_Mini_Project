@@ -11,6 +11,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Component
 public class DataLoader implements ApplicationRunner {
 
@@ -38,26 +41,28 @@ public class DataLoader implements ApplicationRunner {
         Flight flightNYC = new Flight(
                 "New York City",
                 240,
-                "28/12/2024",
-                "06h00"
+                LocalDate.of(2024,12,28),
+                LocalTime.of(6, 0)
         );
         flightNYC.addPassenger(ryan);
         flightRepository.save(flightNYC);
 
+
         Flight flightVegas = new Flight(
                 "Las Vegas",
                 220,
-                "08/12/2023",
-                "14h00"
+                LocalDate.of(2024, 12, 8),
+                LocalTime.of(14, 0)
         );
         flightVegas.addPassenger(zsolt);
         flightRepository.save(flightVegas);
 
+
         Flight flightTokyo = new Flight(
                 "Tokyo",
                 180,
-                "26/07/2024",
-                "10h00"
+                LocalDate.of(2024, 7, 26),
+                LocalTime.of(10,35)
         );
         flightTokyo.addPassenger(colin);
         flightRepository.save(flightTokyo);

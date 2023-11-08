@@ -1,20 +1,22 @@
 package com.example.airline_api.models;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class FlightDTO {
 
     private String destination;
     private int capacity;
-    private String departureDate;
-    private String departureTime;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
     private List<Long> passengerIds;
 
     public void passengerDTO(
             String destination,
             int capacity,
-            String departureDate,
-            String departureTime,
+            LocalDate departureDate,
+            LocalTime departureTime,
             List<Long> passengerIds
                         ){
         this.destination = destination;
@@ -44,19 +46,19 @@ public class FlightDTO {
         this.capacity = capacity;
     }
 
-    public String getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(String departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
-    public String getDepartureTime() {
+    public LocalTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(LocalTime departureTime) {
         this.departureTime = departureTime;
     }
 
