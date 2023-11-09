@@ -4,6 +4,7 @@ import com.example.airline_api.models.Flight;
 import com.example.airline_api.models.FlightDTO;
 import com.example.airline_api.models.Passenger;
 import com.example.airline_api.repositories.FlightRepository;
+import com.example.airline_api.repositories.PassengerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class FlightService {
 
     @Autowired
     FlightRepository flightRepository;
+
+    @Autowired
+    PassengerRepository passengerRepository;
 
     @Autowired
     PassengerService passengerService;
@@ -43,21 +47,10 @@ public class FlightService {
     }
 
     @Transactional
-    public Flight bookPassenger(FlightDTO flightDTO, Long id){
+    public Flight bookPassenger(Long passengerId, Long flightId){
 
-        Flight flightToUpdate = flightRepository.findById(id).get();
-
-        flightToUpdate.setDestination(flightDTO.getDestination());
-        flightToUpdate.setCapacity(flightDTO.getCapacity());
-        flightToUpdate.setDepartureDate(flightDTO.getDepartureDate());
-        flightToUpdate.setDepartureTime(flightDTO.getDepartureTime());
-        flightToUpdate.setPassengers(new ArrayList<>());
-
-        for(Long passengersIds : flightDTO.getPassengerIds()){
-            Passenger passenger = passengerService.getPassengerById(passengersIds).get();
-            flightToUpdate.addPassenger(passenger);
-        }
-
+        Flight flightToUpdate = flightRepository.findById(flightId).get();
+        flightToUpdate.addPassenger(passengerRepository.findById(passengerId).get());
         flightRepository.save(flightToUpdate);
         return flightToUpdate;
     }
